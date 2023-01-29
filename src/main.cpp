@@ -1,16 +1,23 @@
 #include <Arduino.h>
-int thisByte;  
-int av=0;  
+uint64_t bits_counter=0;
+void print1bit(int var) {
+    Serial.print(var % 2);
+}
+
 void setup() {   
-  Serial.begin(9600);   
-  Serial.println("Echo");   
+  Serial.begin(9600);    
 }   
   
-// этот цикл, запустившись, будет повторятся снова и снова:
 void loop() {
-  // считываем входную информацию на 0-ом аналоговом контакте:
-  int sensorValue = analogRead(A0);
-  // конвертируем информацию, считанную на 0-ом аналоговом контакте (цифры в диапазоне от 0 до 1023), в напряжение (цифры в диапазоне от 0.0 до 5.0 вольт):
-  // отображаем считанные и преобразованные данные:
-  Serial.println(sensorValue, BIN);
+  uint8_t sensorValue = analogRead(A0)+
+                        analogRead(A1)+
+                        analogRead(A2)+
+                        analogRead(A3);
+  uint8_t value=sensorValue;
+  //https://mzsoltmolnar.github.io/random-bitstream-tester/
+  //in samples 10^6 bits
+  if(bits_counter<1000000){
+    print1bit(value);
+    bits_counter+=1;
+  }
 }
